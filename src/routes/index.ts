@@ -64,7 +64,7 @@ app.post('/new_artist', async (req: Request, res: Response) => {
   }
 });
 
-// PUT /artists/:artist_id - Actualizar los datos de un artista.
+// PUT /upd_artists/:artist_id - Actualizar los datos de un artista.
 app.put('/upd_artist/:artist_id', async (req: Request, res: Response) => {
   const { artist_id } = req.params;
   const { name } = req.body;
@@ -82,7 +82,7 @@ app.put('/upd_artist/:artist_id', async (req: Request, res: Response) => {
   }
 });
 
-// DELETE /artists/:artist_id - Borrar un artista por su id.
+// DELETE /del_artists/:artist_id - Borrar un artista por su id.
 app.delete('/del_artist/:artist_id', async (req: Request, res: Response) => {
   const { artist_id } = req.params;
 
@@ -102,7 +102,7 @@ app.delete('/del_artist/:artist_id', async (req: Request, res: Response) => {
   }
 });
 
-// GET /publicacion/:publicacion_id - Traer una publicación por su id e incluir la cantidad de temas, duración total del disco en segundos y todos los temas.
+// GET /post/:post_id - Traer una publicación por su id e incluir la cantidad de temas, duración total del disco en segundos y todos los temas.
 app.get('/post/:post_id', async (req: Request, res: Response) => {
   const { post_id } = req.params;
 
@@ -132,7 +132,7 @@ app.get('/post/:post_id', async (req: Request, res: Response) => {
   }
 });
 
-// POST /publicacion - Crear una publicación y sus temas.
+// POST /new_post - Crear una publicación y sus temas.
 app.post('/new_post', async (req: Request, res: Response) => {
   const { artist_id, type, name, post_date, songs } = req.body;
 
