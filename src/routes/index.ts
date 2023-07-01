@@ -2,15 +2,15 @@ const express = require('express');
 const app = express();
 const PORT = process.env.port || 3000;
 
-// app.use(express.json())
-// app.listen(PORT, () =>
-//   console.log('REST API server ready at: http://localhost:3000'),
-// )
-app.get('/', (req, res)=>{
+const artist = require('./artist');
+const post = require('./post');
+const song = require('./song');
 
-})
+app.use('/artists', artist)
+app.use('/post', post)
+app.use('/song', song)
 
-app.listen(PORT, err =>{
+app.listen(PORT, (err:any) =>{
   if (err){
     return console.log('ERROR', err)
   }

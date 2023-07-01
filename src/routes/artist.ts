@@ -1,17 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import express, { Request, Response } from 'express';
 
+const router = express.Router();
 const prisma = new PrismaClient();
-const app = express();
-const PORT = 3000;
-
-app.use(express.json())
-app.listen(PORT, () =>
-  console.log('REST API server ready at: http://localhost:3000'),
-)
 
 // GET /artists - Traer todos los artistas disponibles.
-app.get('/artists', async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
     try {
       const artists = await prisma.artists.findMany();
       res.json(artists);
@@ -21,8 +15,8 @@ app.get('/artists', async (req: Request, res: Response) => {
     }
   });
   
-  // GET /artists/:artist_id - Traer un artista por su id e incluir todas sus publicaciones ordenadas por fecha de publicacion.
-  app.get('/artists/:artist_id', async (req: Request, res: Response) => {
+// GET /artists/:artist_id - Traer un artista por su id e incluir todas sus publicaciones ordenadas por fecha de publicacion.
+  router.get('/:artist_id', async (req: Request, res: Response) => {
     const { artist_id } = req.params;
   
     try {
@@ -36,7 +30,6 @@ app.get('/artists', async (req: Request, res: Response) => {
       if (!artist) {
         return res.status(404).json({ error: 'Artista no encontrado.' });
       }
-  
       res.json(artist);
     } catch (error) {
       console.error(error);
@@ -46,7 +39,7 @@ app.get('/artists', async (req: Request, res: Response) => {
   
   
   // POST /new_artist - Crear un nuevo artista.
-  app.post('/new_artist', async (req: Request, res: Response) => {
+  router.post('/new_artist', async (req: Request, res: Response) => {
     const { name } = req.body;
   
     if (!name) {
@@ -66,7 +59,7 @@ app.get('/artists', async (req: Request, res: Response) => {
   });
   
   // PUT /upd_artists/:artist_id - Actualizar los datos de un artista.
-  app.put('/upd_artist/:artist_id', async (req: Request, res: Response) => {
+  router.put('/upd_artist/:artist_id', async (req: Request, res: Response) => {
     const { artist_id } = req.params;
     const { name } = req.body;
   
@@ -84,7 +77,7 @@ app.get('/artists', async (req: Request, res: Response) => {
   });
   
   // DELETE /del_artists/:artist_id - Borrar un artista por su id.
-  app.delete('/del_artist/:artist_id', async (req: Request, res: Response) => {
+  router.delete('/del_artist/:artist_id', async (req: Request, res: Response) => {
     const { artist_id } = req.params;
   
     try {
@@ -103,3 +96,4 @@ app.get('/artists', async (req: Request, res: Response) => {
     }
   });
   
+  module.exports = router;

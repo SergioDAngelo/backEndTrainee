@@ -1,16 +1,13 @@
 import { PrismaClient } from '@prisma/client';
 import express, { Request, Response } from 'express';
 
+const router = express.Router();
 const prisma = new PrismaClient();
-const app = express();
-const PORT = 3000;
-app.use(express.json())
-app.listen(PORT, () =>
-  console.log('REST API server ready at: http://localhost:3000'),
-)
+
+
 
 // GET /post/:post_id - Traer una publicación por su id e incluir la cantidad de temas, duración total del disco en segundos y todos los temas.
-app.get('/post/:post_id', async (req: Request, res: Response) => {
+router.get('/:post_id', async (req: Request, res: Response) => {
     const { post_id } = req.params;
   
     try {
@@ -40,7 +37,7 @@ app.get('/post/:post_id', async (req: Request, res: Response) => {
   });
   
   // POST /new_post - Crear una publicación y sus temas.
-  app.post('/new_post', async (req: Request, res: Response) => {
+router.post('/new_post', async (req: Request, res: Response) => {
     const { artist_id, type, name, post_date, songs } = req.body;
   
     if (!artist_id || !type || !name || !post_date || !songs) {
@@ -74,7 +71,7 @@ app.get('/post/:post_id', async (req: Request, res: Response) => {
   });
   
   // DELETE /del_post/:post_id 
-  app.delete('/del_post/:post_id', async (req, res) => {
+router.delete('/del_post/:post_id', async (req, res) => {
     const { post_id } = req.params;
   
     try {
@@ -95,4 +92,6 @@ app.get('/post/:post_id', async (req: Request, res: Response) => {
       res.status(500).json({ error: 'Ocurrió un error al borrar el post.' });
     }
   });
+
+  module.exports = router;
   
