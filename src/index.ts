@@ -2,10 +2,12 @@ const express = require('express');
 const app = express();
 const PORT = process.env.port || 3000;
 
-const artist = require('./artist');
-const post = require('./post');
-const song = require('./song');
 
+const artist = require('./routes/artist');
+const post = require('./routes/post');
+const song = require('./routes/song');
+
+app.use(express.json())
 app.use('/artists', artist)
 app.use('/post', post)
 app.use('/song', song)

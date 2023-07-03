@@ -17,9 +17,9 @@ router.get('/', async (req: Request, res: Response) => {
   
 // GET /artists/:artist_id - Traer un artista por su id e incluir todas sus publicaciones ordenadas por fecha de publicacion.
   router.get('/:artist_id', async (req: Request, res: Response) => {
-    const { artist_id } = req.params;
-  
+    
     try {
+      const { artist_id } = req.params;
       const artist = await prisma.artists.findUnique({
         where: { id: parseInt(artist_id) },
         include: { post: {
@@ -31,26 +31,25 @@ router.get('/', async (req: Request, res: Response) => {
         return res.status(404).json({ error: 'Artista no encontrado.' });
       }
       res.json(artist);
+      console.log(res.json(artist))
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Ocurrió un error al obtener el artista.' });
     }
   });
-  
-  
+
   // POST /new_artist - Crear un nuevo artista.
   router.post('/new_artist', async (req: Request, res: Response) => {
-    const { name } = req.body;
-  
-    if (!name) {
-      return res.status(400).json({ error: 'Falta el nombre del artista.' });
-    }
-  
+    
     try {
+      const { name } = req.body;
+      if (!name) {
+        return res.status(400).json({ error: 'Falta el nombre del artista.' });
+      }
       const new_artist = await prisma.artists.create({
-        data: { name },
+        data: req.body,
       });
-  
+      console.log(req.body)
       res.json(new_artist);
     } catch (error) {
       console.error(error);
@@ -78,9 +77,8 @@ router.get('/', async (req: Request, res: Response) => {
   
   // DELETE /del_artists/:artist_id - Borrar un artista por su id.
   router.delete('/del_artist/:artist_id', async (req: Request, res: Response) => {
-    const { artist_id } = req.params;
-  
     try {
+      const { artist_id } = req.params;
       const deleted_artist = await prisma.artists.delete({
         where: { id: parseInt(artist_id) },
       });
